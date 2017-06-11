@@ -2,7 +2,7 @@
 """
 upnp_discover.py
 
-Listen for uPnp alive messages
+Listen for UPnP alive messages
 
 FILE: $HeadURL$
 REVISION: $Revision$
