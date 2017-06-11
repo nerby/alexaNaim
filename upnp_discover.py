@@ -36,13 +36,26 @@ def mlisten(grp, port):
     sock.setsockopt(socket.SOL_IP, socket.IP_ADD_MEMBERSHIP,
                     socket.inet_aton(grp) + socket.inet_aton(host))
 
+    data = None
+    addr = None
+
+    try:
+        data, addr = sock.recvfrom(9000)
+    except socket.error, exception:
+        print('Exception', exception)
+
+    return data, addr
+
+def main():
+    """
+    Main program
+    """
+
     while True:
-        try:
-            data, addr = sock.recvfrom(1024)
-        except socket.error, exception:
-            print('Exception', exception)
+        data, addr = mlisten(MULTICAST_GRP, MULTICAST_PORT)
         print(addr)
         print(data)
         print('---')
 
-mlisten(MULTICAST_GRP, MULTICAST_PORT)
+if __name__ == '__main__':
+    main()
