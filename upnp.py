@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-upnp_discover.py
+upnp.py
 
 Listen for UPnP alive messages
 
