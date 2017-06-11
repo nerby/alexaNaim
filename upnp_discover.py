@@ -16,12 +16,14 @@ from __future__ import print_function
 
 import socket
 
+#  http://upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.0.pdf
+
 MULTICAST_GRP = "239.255.255.250"
 MULTICAST_PORT = 1900
 
 def mlisten(grp, port):
     """
-    Listen for multicast packets and print them
+    Listen for multicast packets and return them
     """
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -48,7 +50,7 @@ def mlisten(grp, port):
 
 def main():
     """
-    Main program
+    Main program sit in a loop printing packets
     """
 
     while True:
