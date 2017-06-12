@@ -72,7 +72,7 @@ def parse_upnp(data):
 
     return first_line[0], first_line[1], first_line[2], values
 
-def verify_msearch(data):
+def verify_msearch(data):   # pylint: disable=too-many-return-statements
     """
     Verify this is a M-SEARCH packet
     return the ST (Search target) and MX (Maximum wait time)
@@ -100,7 +100,53 @@ def verify_msearch(data):
     if values["MAN"] != '"ssdp:discover"':
         return false_tuple
 
-    return True, values["ST"], values["MX"]
+    try:
+        maximum_time = values["MX"]
+    except ValueError:
+        return false_tuple
+
+    # Spec says value cannot be greater than 120
+    if maximum_time > 120:
+        maximum_time = 120
+
+    return True, values["ST"], maximum_time
+
+def send_unicast_response(addr, port, payload):
+    """
+    Send a unicast response to a M-SEARCH (ssdp.discovery)
+
+    HTTP/1.1 200 OK
+    HOST: 239.255.255.250:1900
+    EXT:
+    CACHE-CONTROL: max-age=100
+    LOCATION: http://172.16.1.153:80/description.xml
+    SERVER: Linux/3.14.0 UPnP/1.0 IpBridge/1.18.0
+    hue-bridgeid: 001788FFFE283D27
+    ST: upnp:rootdevice
+    USN: uuid:2f402f80-da50-11e1-9b23-001788283d27::upnp:rootdevice
+    """
+
+    # TODO
+
+def multicast_response(payload):
+    """
+    Used to send periodic multicast NOTIFY (ssdp.alive)
+
+    NOTIFY * HTTP/1.1
+    Host: 239.255.255.250:1900
+    Location: http://172.16.1.160:3500/
+    NTS: ssdp:alive
+    Cache-Control: max-age=1800
+    Server: UPnP/1.0 DLNADOC/1.50 AirReceiver/1.0.3.0
+    USN: uuid:8698b57c-42b5-44d0-93dc-295178cca460::upnp:rootdevice
+    NT: upnp:rootdevice
+
+    """
+
+    # TODO
+    # Remember ttl must be set to 4
+    # ttl = struct.pack('b', 4)
+    # sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)
 
 def main():
     """
