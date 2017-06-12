@@ -101,7 +101,7 @@ def verify_msearch(data):   # pylint: disable=too-many-return-statements
         return false_tuple
 
     try:
-        maximum_time = values["MX"]
+        maximum_time = int(values["MX"])
     except ValueError:
         return false_tuple
 
