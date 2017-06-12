@@ -82,6 +82,7 @@ def main():
 
     web = WebServer()
     try:
+        web.daemon = True
         web.start()
         test_msearch()
     except KeyboardInterrupt:
