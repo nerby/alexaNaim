@@ -135,3 +135,20 @@ class WebServer(threading.Thread):
 
         print("Shutting down web server on next request")
         self.keep_running = False
+
+def main():
+    """
+    Main program to just run the web server
+    """
+
+    web = WebServer()
+    try:
+        web.daemon = True
+        web.start()
+        web.join()
+    except KeyboardInterrupt:
+        print("Interrupted")
+        web.stop()
+
+if __name__ == '__main__':
+    main()
