@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 web.py
 
@@ -14,10 +14,20 @@ Atanu Ghosh
 """
 from __future__ import print_function
 
-import BaseHTTPServer
+import sys
 import threading
 import time
-import urllib
+
+# Shutdown the errors due to supporting python2 and python3
+# pylint: disable=no-name-in-module,import-error
+
+if sys.version_info[0] > 2:
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+    from urllib.parse import unquote
+else:
+    from urllib import unquote
+    from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+
 
 WEBSERVERPORT = 8080
 TIMEFMT = "%Y-%m-%d %H:%M:%S"
@@ -27,37 +37,37 @@ def index(sock):
     Return index page
     """
 
-    sock.write("<html>")
-    sock.write("<head>")
+    sock.write(b"<html>")
+    sock.write(b"<head>")
 #    sock.write('<meta http-equiv="refresh" content="30">')
-    sock.write("</head>")
-    sock.write("<body>")
-    sock.write("<title>Alexa to Naim bridge</title>")
-    sock.write("<h1>Alexa to Naim bridge</h1>")
-    sock.write("<h2>%s</h2>" % time.strftime(TIMEFMT))
+    sock.write(b"</head>")
+    sock.write(b"<body>")
+    sock.write(b"<title>Alexa to Naim bridge</title>")
+    sock.write(b"<h1>Alexa to Naim bridge</h1>")
+    sock.write(("<h2>%s</h2>" % time.strftime(TIMEFMT)).encode("utf-8"))
 
-    sock.write("</body>")
-    sock.write("</html>")
+    sock.write(b"</body>")
+    sock.write(b"</html>")
 
 def description(sock):
     """
     Generate a description page
     """
 
-    sock.write("<html>")
-    sock.write("<head>")
+    sock.write(b"<html>")
+    sock.write(b"<head>")
 #    sock.write('<meta http-equiv="refresh" content="30">')
-    sock.write("</head>")
-    sock.write("<body>")
-    sock.write("<title>Description</title>")
-    sock.write('<h1>Description</h1>')
-    sock.write("<h2>%s</h2>" % time.strftime(TIMEFMT))
-    sock.write("<h2>TBD</h2>")
+    sock.write(b"</head>")
+    sock.write(b"<body>")
+    sock.write(b"<title>Description</title>")
+    sock.write(b'<h1>Description</h1>')
+    sock.write(("<h2>%s</h2>" % time.strftime(TIMEFMT)).encode("utf-8"))
+    sock.write(b"<h2>TBD</h2>")
 
-    sock.write("</body>")
-    sock.write("</html>")
+    sock.write(b"</body>")
+    sock.write(b"</html>")
 
-class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
+class Handler(BaseHTTPRequestHandler):
     """
     Handle requests for URLs
     """
@@ -80,7 +90,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
         Respond to GET request
         """
 
-        print("Path", sock.path, urllib.unquote(sock.path))
+        print("Path", sock.path, unquote(sock.path))
         Handler.do_HEAD(sock)
         if sock.path in sock.paths:
             sock.paths[sock.path](sock.wfile)
@@ -99,7 +109,7 @@ class WebServer(threading.Thread):
         Get the remote into from the main thread
         """
 
-        self.webserver(BaseHTTPServer.HTTPServer, Handler)
+        self.webserver(HTTPServer, Handler)
 
 
     def webserver(self, server_class, handler_class):
