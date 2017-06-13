@@ -14,6 +14,7 @@ Atanu Ghosh
 """
 from __future__ import print_function
 
+import logging
 import socket
 import sys
 
@@ -45,8 +46,13 @@ def mlisten(grp, port):
 
     try:
         data, addr = sock.recvfrom(9000)
-    except socket.error, exception:
-        print('Exception', exception)
+        logging.debug(addr)
+        logging.debug(data)
+    except socket.error as err:
+        print("socket.error".format(err))
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        raise
 
     sock.close()
 
@@ -152,6 +158,8 @@ def main():
     """
     Main program sit in a loop printing packets
     """
+
+    logging.basicConfig(level=logging.DEBUG)
 
     while True:
         data, addr = mlisten(MULTICAST_GRP, MULTICAST_PORT)
