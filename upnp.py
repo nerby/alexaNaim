@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 upnp.py
 
@@ -56,7 +56,7 @@ def mlisten(grp, port):
 
     sock.close()
 
-    return data, addr
+    return data.decode("utf-8"), addr
 
 def parse_upnp(data):
     """
@@ -165,7 +165,7 @@ def main():
         data, addr = mlisten(MULTICAST_GRP, MULTICAST_PORT)
         try:
             hostname = socket.gethostbyaddr(addr[0])
-        except socket.herror:
+        except (socket.herror, socket.gaierror):
             hostname = "UNKNOWN"
         print(addr, hostname)
         print(data)
@@ -174,8 +174,8 @@ def main():
         print("Spec", spec)
         print("Version", version)
         print("Values", values)
-        for key, value in values.iteritems():
-            print(key, value)
+        for key in values:
+            print(key, values[key])
 
         is_msearch, search_target, maximum_wait_time = verify_msearch(data)
         if is_msearch:
