@@ -2,7 +2,7 @@
 """
 upnp.py
 
-Listen for UPnP alive messages
+Support functions for UPnP V1.0
 
 FILE: $HeadURL$
 REVISION: $Revision$
