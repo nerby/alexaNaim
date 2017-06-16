@@ -13,3 +13,7 @@ At the time of writing the protocol between the Naim phone app and the
 Naim mu-so has not been examined. A request for information from Naim
 was denied. If the communication is encrypted then it will not be
 possible to reverse engineer.
+
+## Unit tests
+$ ./tests.py
+
