@@ -76,6 +76,9 @@ def parse_upnp(data):
         if pos != -1:
             values[i[0:pos]] = i[pos+1:].strip()
 
+    if len(first_line) != 3:
+        return "", "", "", {}
+
     return first_line[0], first_line[1], first_line[2], values
 
 def verify_msearch(data):   # pylint: disable=too-many-return-statements
