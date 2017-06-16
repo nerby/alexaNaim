@@ -24,14 +24,14 @@ class TestUPnPMethods(unittest.TestCase):
 
     EOL = "\r\n"
 
-    # pylint: disable=line-too-long
     NOTIFY1 = ["NOTIFY", "*", "HTTP/1.1",
                {"Host" : "239.255.255.250:1900",
                 "Location" : "http://172.16.1.160:3500",
                 "NTS" :  "ssdp:alive",
                 "Cache-Control" : "max-age=1800",
                 "Server" : "UPnP/1.0 DLNADOC/1.50 AirReceiver/1.0.3.0",
-                "USN" : "uuid:8698b57c-42b5-44d0-93dc-295178cca460::urn:schemas-upnp-org:service:ConnectionManager:1",
+                "USN" : "uuid:8698b57c-42b5-44d0-93dc-295178cca460::urn:schemas-upnp-org:service:ConnectionManager:1", # pylint: disable=line-too-long
+
                 "NT" : "urn:schemas-upnp-org:service:ConnectionManager:1"
                }]
 
