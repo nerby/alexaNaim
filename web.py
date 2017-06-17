@@ -17,6 +17,7 @@ from __future__ import print_function
 import sys
 import threading
 import time
+import utils
 
 # Shutdown the errors due to supporting python2 and python3
 # pylint: disable=no-name-in-module,import-error
@@ -117,7 +118,7 @@ class WebServer(threading.Thread):
         The web server
         """
 
-        server_address = ('127.0.0.1', WEBSERVERPORT)
+        server_address = (utils.get_interface_ip_address(), WEBSERVERPORT)
         httpd = server_class(server_address, handler_class)
 
         print("Webserver running on ", server_address)
