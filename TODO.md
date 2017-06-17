@@ -1,7 +1,7 @@
 # TODO List #
 
 # web.py
-- [ ] Get the ip address of the interface to run the web server on
+- [x ] Get the ip address of the interface to run the web server on
 - [ ] Generalize the code to return different content type
 - [ ] Allow the adding of specific page handlers, so main can add debugging
 - [ ] Parametrize description.xml and return it from the web server 
