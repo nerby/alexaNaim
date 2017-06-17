@@ -16,7 +16,7 @@ from __future__ import print_function
 
 import socket
 
-def get_interface_ip_address(peer = "8.8.8.8"):
+def get_interface_ip_address(peer="8.8.8.8"):
     """
     Get the IP address of the interface on which I will transmit packets
     This will discover one of the interfaces on the host.
@@ -34,10 +34,10 @@ def get_interface_ip_address(peer = "8.8.8.8"):
     Therefore this trick returns 127.0.0.1.
     """
 
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect((peer, 1))
-    interface_ip_address = s.getsockname()[0]    
-    s.close()
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.connect((peer, 1))
+    interface_ip_address = sock.getsockname()[0]
+    sock.close()
 
     return interface_ip_address
 
