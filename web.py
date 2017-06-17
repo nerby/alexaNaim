@@ -29,7 +29,6 @@ else:
     from urllib import unquote
     from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 
-
 WEBSERVERPORT = 8080
 TIMEFMT = "%Y-%m-%d %H:%M:%S"
 
