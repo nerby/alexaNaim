@@ -73,8 +73,11 @@ class Handler(BaseHTTPRequestHandler):
     Handle requests for URLs
     """
 
-    paths = {"/" : index,
-             "/description.xml" : description,
+    FUNCTION = 0
+    CONTENT_TYPE = 1
+
+    paths = {"/" : [index],
+             "/description.xml" : [description, "text/xml"],
             }
 
     def do_HEAD(sock):  # pylint: disable=invalid-name,no-self-argument
@@ -82,8 +85,16 @@ class Handler(BaseHTTPRequestHandler):
         Respond to head request
         """
 
+        content_type = "text/html"
+
         sock.send_response(200)
-        sock.send_header("Content-type", "text/html")
+        if sock.path in sock.paths:
+            entry = sock.paths[sock.path]
+            if len(entry) > 1:
+                content_type = entry[Handler.CONTENT_TYPE]
+            sock.send_header("Content-type", content_type)
+        else:
+            sock.send_header("Content-type", content_type)
         sock.end_headers()
 
     def do_GET(sock):  # pylint: disable=invalid-name,no-self-argument
@@ -94,7 +105,7 @@ class Handler(BaseHTTPRequestHandler):
         print("Path", sock.path, unquote(sock.path))
         Handler.do_HEAD(sock)
         if sock.path in sock.paths:
-            sock.paths[sock.path](sock.wfile)
+            sock.paths[sock.path[Handler.FUNCTION]](sock.wfile)
         else:
             index(sock.wfile)
 
